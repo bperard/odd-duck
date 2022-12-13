@@ -2,9 +2,12 @@
 
 // PROVIDED DATA
 
+const userInputForm = document.querySelector('#userInputDiv form');
 const itemDataTrackersArray = [];
 const userSessions = [];
+
 let resultsTableElementsArray = [];
+
 
 const imageFilenamesString = 'bag.jpg banana.jpg bathroom.jpg boots.jpg breakfast.jpg bubblegum.jpg chair.jpg cthulhu.jpg dog-duck.jpg dragon.jpg pen.jpg pet-sweep.jpg scissors.jpg shark.jpg sweep.jpg tauntaun.jpg unicorn.jpg water-can.jpg wine-glass.jpg';
 
@@ -54,14 +57,28 @@ function UserSessionObject(totalRounds, itemsPerRound) {
 
 // CONSTRUCTOR METHODS
 
-ItemDataTracker.prototype.addView = function () {
+ItemDataTracker.prototype.addView = function() {
   this.views++;
 };
 
-ItemDataTracker.prototype.addVote = function () {
+ItemDataTracker.prototype.addVote = function() {
   this.votes++;
 };
 
+UserSessionObject.prototype.generateItemDataTrackerIndex = function() {
+  let index = Math.floor(Math.random() * itemDataTrackersArray.length);
+  if (this.currentItemDataTrackersArray.includes(index)) {
+    index = this.generateItemDataTrackerIndex();
+  }
+  return index;
+};
+
+UserSessionObject.prototype.generateCurrentItemDataTrackersArray = function() {
+  for (let i = 0; i < this.itemsPerRound; i++) {
+    const newIndex = this.generateItemDataTrackerIndex();
+    this.currentItemDataTrackersArray.push(newIndex);
+  }
+};
 
 
 // UserSessionObject.prototype.methods
@@ -80,8 +97,19 @@ ItemDataTracker.prototype.addVote = function () {
 
 function startOddDuckin(event) {
   event.preventDefault();
+  
+  const totalRounds = 25; // get totalRoundsInput.value
+  const itemsPerRound = 3; // get itemsPerRoundInput.value
+
+  if(event.target.id === 'startOddDuckinButton' && totalRounds > 0 && itemsPerRound > 1) {
+    event.target.classList.toggle('hideButton');
+
+    const currentUserSession = new UserSessionObject(totalRounds, itemsPerRound);
+    currentUserSession.generateCurrentItemDataTrackersArray();
 
 
+    event.target.classList.toggle('hideButton');
+  }
   // get totalRounds, itemsPerRound from DOM
   // hide button
   // const currentUserSession = new UserSessionObject(totalRounds, itemsPerRound);
@@ -89,6 +117,10 @@ function startOddDuckin(event) {
   // userSessionObject.runGame();
   // show button
 }
+
+// EVENT LISTENERS
+
+userInputForm.addEventListener('click', startOddDuckin);
 
 // RENDER FUNCTIONS
 
