@@ -1,6 +1,6 @@
 'use strict';
 
-// PROVIDED DATA
+// PROVIDED & LOCAL STORAGE DATA
 
 const userInputForm = document.querySelector('#userInputDiv form');
 const itemDataTrackersArray = [];
@@ -31,11 +31,11 @@ function createImageObjectsArray(filenameString) {
     localStorage.setItem('stringyImageObjectsArray', stringyImageObjectsArray);
 
   } else {
-    console.log('LOCAL STORAGE', JSON.parse(stringyImageObjectsArray), stringyImageObjectsArray);
+    console.log('LOCAL STORAGE PARSED&STRING ARRAY', JSON.parse(stringyImageObjectsArray), stringyImageObjectsArray);
     return JSON.parse(stringyImageObjectsArray);
   }
 
-  console.log('NEW', imageObjectsArray);
+  console.log('NEW ARRAY TO LOCAL STORAGE', imageObjectsArray);
   return imageObjectsArray;
 }
 
@@ -170,17 +170,4 @@ function createResultsTableBody() {
 
 // EXECUTABLE CODE
 
-// Check local storage  for array, retrieve if present, create and add if not
-
 createItemDataTrackersArray();
-// const test = {
-//   test: 'yo'
-// };
-// const stringyTest = JSON.stringify(test);
-// localStorage.setItem('itemarray', stringyTest);
-// let undefinedLS = localStorage.getItem('itemarray');
-// undefinedLS = JSON.parse(undefinedLS);
-// if (!undefinedLS) {
-//   console.log('yup');
-// }
-// console.log(undefinedLS.test);
