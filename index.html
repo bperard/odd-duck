@@ -14,6 +14,53 @@
   </header>
 
   <main>
+    <section id="choices">
+
+      <div id="oddDuckItemsContainer">
+        <!-- Prompt for rounds and game start toggle to game -->
+        <!--
+          Choices 
+          IMG
+          NAME
+        < Flex space-around row>
+      -->
+      </div>
+      
+      <div id="userInputDiv">
+        <form>
+          <label for="totalRoundsInput">
+            <input type="number" min="1" name="totalRoundsInput" id="totalRoundsInput">
+          </label>
+          <label for="itemsPerRoundInput">
+            <input type="number" min="2" name="itemsPerRoundInput">
+          </label>
+          <button id="startOddDuckinButton">
+            Start Odd-Duckin'
+          </button>
+        </form>
+        <!-- REMAINING TURNS
+           Turns & Directions Short -->
+      </div>
+      
+    </section>
+
+    <article>
+      <table>
+        <thead>
+          <th>Name</th>
+          <th>Views</th>
+          <th>Votes</th>
+        </thead>
+        <tbody id="resultsTableBody">
+          Start Session To View Results
+        </tbody>
+        <tfoot>
+          <th>CURRENT</th>
+          <th>ROUND:</th>
+          <th id="currentRoundCell">0</th>
+        </tfoot>
+      </table>
+    </article>
 
   </main>
 
