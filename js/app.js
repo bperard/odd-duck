@@ -93,6 +93,8 @@ UserSessionObject.prototype.generateCurrentItemDataTrackersArray = function () {
 };
 
 
+
+
 // UserSessionObject.prototype.methods
 // start voting session
 // addEvent listener for voting div
@@ -110,12 +112,12 @@ function startOddDuckin(event) {
   const itemsPerRound = 3; // get itemsPerRoundInput.value
 
   if (event.target.id === 'startOddDuckinButton' && totalRounds > 0 && itemsPerRound > 1) {
-    event.target.classList.toggle('hideButton');
+    // event.target.classList.toggle('hideButton');
 
     createResultsTableBody();
     const currentUserSession = new UserSessionObject(totalRounds, itemsPerRound);
     currentUserSession.generateCurrentItemDataTrackersArray();
-
+    console.log(currentUserSession.currentItemDataTrackersArray);
     // render currentItmeDataTrackersArray data
     // addEvent Listener to voting div
     // refresh array(with varitey controls)
@@ -126,7 +128,7 @@ function startOddDuckin(event) {
     // show results
 
 
-    event.target.classList.toggle('hideButton');
+    // event.target.classList.toggle('hideButton');
   }
 
   // userSessionObject.runGame();
@@ -146,7 +148,7 @@ userInputForm.addEventListener('click', startOddDuckin);
 // RENDER FUNCTIONS
 
 function createResultsTableBody() {
-  const parentEl = document.querySelector('#resultsTablebody');
+  const parentEl = document.querySelector('#resultsTableBody');
   parentEl.innerHTML = '';
 
   for (let i = 0; i < itemDataTrackersArray.length; i++) {
@@ -171,3 +173,4 @@ function createResultsTableBody() {
 // EXECUTABLE CODE
 
 createItemDataTrackersArray();
+console.log('createItemDataTrackersArray', itemDataTrackersArray);
