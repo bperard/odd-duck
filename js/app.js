@@ -3,11 +3,11 @@
 // PROVIDED & LOCAL STORAGE DATA
 
 const userInputForm = document.querySelector('#userInputDiv form');
+const oddDuckItemsContainer = document.querySelector('#oddDuckItemsContainer');
+
 const itemDataTrackersArray = [];
 const userSessions = [];
-
 let resultsTableElementsArray = [];
-
 
 const imageFilenamesString = 'bag.jpg banana.jpg bathroom.jpg boots.jpg breakfast.jpg bubblegum.jpg chair.jpg cthulhu.jpg dog-duck.jpg dragon.jpg pen.jpg pet-sweep.jpg scissors.jpg shark.jpg sweep.jpg tauntaun.jpg unicorn.jpg water-can.jpg wine-glass.jpg';
 
@@ -62,37 +62,45 @@ function UserSessionObject(totalRounds, itemsPerRound) {
   this.currentRound = 1;
   this.rounds = totalRounds;
   this.itemsPerRound = itemsPerRound;
-  this.currentItemDataTrackersArray = [];
-
-
+  this.currentItemDataTrackerIndexArray = [];
 }
 
 // CONSTRUCTOR METHODS
 
-ItemDataTracker.prototype.addView = function () {
+ItemDataTracker.prototype.addView = function() {
   this.views++;
 };
 
-ItemDataTracker.prototype.addVote = function () {
+ItemDataTracker.prototype.addVote = function() {
   this.votes++;
 };
 
-UserSessionObject.prototype.generateItemDataTrackerIndex = function () {
+UserSessionObject.prototype.generateItemDataTrackerIndex = function() {
   let index = Math.floor(Math.random() * itemDataTrackersArray.length);
-  if (this.currentItemDataTrackersArray.includes(index)) {
+  if (this.currentItemDataTrackerIndexArray.includes(index)) {
     index = this.generateItemDataTrackerIndex();
   }
   return index;
 };
 
-UserSessionObject.prototype.generateCurrentItemDataTrackersArray = function () {
+UserSessionObject.prototype.generateCurrentItemDataTrackerIndexArray = function() {
   for (let i = 0; i < this.itemsPerRound; i++) {
     const newIndex = this.generateItemDataTrackerIndex();
-    this.currentItemDataTrackersArray.push(newIndex);
+    this.currentItemDataTrackerIndexArray.push(newIndex);
   }
 };
 
-
+UserSessionObject.prototype.renderCurrentItemDataTrackerIndexArray = function() {
+  for (let i = 0; i < this.currentItemDataTrackerIndexArray.length; i++) {
+    const newItem = itemDataTrackersArray[this.currentItemDataTrackerIndexArray[i]];
+    const imgEl = document.createElement('img');
+    console.log(newItem);
+    imgEl.setAttribute('src', `img/${newItem.name}.${newItem.extension}`);
+    imgEl.setAttribute('alt', `${newItem.name}`);
+    imgEl.setAttribute('id', newItem.renderPosition);
+    oddDuckItemsContainer.appendChild(imgEl);
+  }
+};
 
 
 // UserSessionObject.prototype.methods
@@ -112,12 +120,13 @@ function startOddDuckin(event) {
   const itemsPerRound = 3; // get itemsPerRoundInput.value
 
   if (event.target.id === 'startOddDuckinButton' && totalRounds > 0 && itemsPerRound > 1) {
-    // event.target.classList.toggle('hideButton');
+    event.target.classList.toggle('hideButton');
 
     createResultsTableBody();
     const currentUserSession = new UserSessionObject(totalRounds, itemsPerRound);
-    currentUserSession.generateCurrentItemDataTrackersArray();
-    console.log(currentUserSession.currentItemDataTrackersArray);
+    currentUserSession.generateCurrentItemDataTrackerIndexArray();
+    console.log(currentUserSession.currentItemDataTrackerIndexArray);
+    currentUserSession.renderCurrentItemDataTrackerIndexArray();
     // render currentItmeDataTrackersArray data
     // addEvent Listener to voting div
     // refresh array(with varitey controls)
@@ -137,7 +146,7 @@ function startOddDuckin(event) {
 function handleOddDuckinRoundsInput(event) {
   event.preventDefault();
 
-  // add views to every item in currentItemDataTrackersArray
+  // add views to every item in currentItemDataTrackerIndexArray
   // add vote to ItemDataTracker matching event.target.value
 }
 
