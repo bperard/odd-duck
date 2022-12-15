@@ -93,8 +93,9 @@ UserSessionObject.prototype.generateCurrentItemDataTrackerIndexArray = function(
 UserSessionObject.prototype.renderCurrentItemDataTrackerIndexArray = function() {
   for (let i = 0; i < this.currentItemDataTrackerIndexArray.length; i++) {
     const newItem = itemDataTrackersArray[this.currentItemDataTrackerIndexArray[i]];
+
+    
     const imgEl = document.createElement('img');
-    console.log(newItem);
     imgEl.setAttribute('src', `img/${newItem.name}.${newItem.extension}`);
     imgEl.setAttribute('alt', `${newItem.name}`);
     imgEl.setAttribute('id', newItem.renderPosition);
@@ -127,7 +128,6 @@ function startOddDuckin(event) {
     currentUserSession.generateCurrentItemDataTrackerIndexArray();
     console.log(currentUserSession.currentItemDataTrackerIndexArray);
     currentUserSession.renderCurrentItemDataTrackerIndexArray();
-    // render currentItmeDataTrackersArray data
     // addEvent Listener to voting div
     // refresh array(with varitey controls)
     // receive results
