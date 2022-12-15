@@ -14,16 +14,28 @@ const imageFilenamesString = 'bag.jpg banana.jpg bathroom.jpg boots.jpg breakfas
 function createImageObjectsArray(filenameString) {
   const imageObjectsArray = [];
 
-  const parsedFilenamesArray = filenameString.split(' ');
-  for (let i = 0; i < parsedFilenamesArray.length; i++) {
-    const nameExtensionArray = parsedFilenamesArray[i].split('.');
-    const newImageObject = {
-      name: nameExtensionArray[0],
-      extension: nameExtensionArray[1],
-    };
-    imageObjectsArray.push(newImageObject);
+  const stringyImageObjectsArray = localStorage.getItem('stringyImageObjectsArray');
+
+  if (!stringyImageObjectsArray) {
+    const parsedFilenamesArray = filenameString.split(' ');
+    for (let i = 0; i < parsedFilenamesArray.length; i++) {
+      const nameExtensionArray = parsedFilenamesArray[i].split('.');
+      const newImageObject = {
+        name: nameExtensionArray[0],
+        extension: nameExtensionArray[1],
+      };
+      imageObjectsArray.push(newImageObject);
+    }
+
+    const stringyImageObjectsArray = JSON.stringify(imageObjectsArray);
+    localStorage.setItem('stringyImageObjectsArray', stringyImageObjectsArray);
+
+  } else {
+    console.log('LOCAL STORAGE', JSON.parse(stringyImageObjectsArray), stringyImageObjectsArray);
+    return JSON.parse(stringyImageObjectsArray);
   }
 
+  console.log('NEW', imageObjectsArray);
   return imageObjectsArray;
 }
 
@@ -57,15 +69,15 @@ function UserSessionObject(totalRounds, itemsPerRound) {
 
 // CONSTRUCTOR METHODS
 
-ItemDataTracker.prototype.addView = function() {
+ItemDataTracker.prototype.addView = function () {
   this.views++;
 };
 
-ItemDataTracker.prototype.addVote = function() {
+ItemDataTracker.prototype.addVote = function () {
   this.votes++;
 };
 
-UserSessionObject.prototype.generateItemDataTrackerIndex = function() {
+UserSessionObject.prototype.generateItemDataTrackerIndex = function () {
   let index = Math.floor(Math.random() * itemDataTrackersArray.length);
   if (this.currentItemDataTrackersArray.includes(index)) {
     index = this.generateItemDataTrackerIndex();
@@ -73,7 +85,7 @@ UserSessionObject.prototype.generateItemDataTrackerIndex = function() {
   return index;
 };
 
-UserSessionObject.prototype.generateCurrentItemDataTrackersArray = function() {
+UserSessionObject.prototype.generateCurrentItemDataTrackersArray = function () {
   for (let i = 0; i < this.itemsPerRound; i++) {
     const newIndex = this.generateItemDataTrackerIndex();
     this.currentItemDataTrackersArray.push(newIndex);
@@ -82,40 +94,49 @@ UserSessionObject.prototype.generateCurrentItemDataTrackersArray = function() {
 
 
 // UserSessionObject.prototype.methods
-// usses itemDataTrackersArray and runs each turn
-// set rounds & items/rd
 // start voting session
-
 // addEvent listener for voting div
 // update itemDataTrackers each round
 // update rounds
 // create
 // end voting session & remove event listener
-// 
 
 // EVENT HANDLERS
 
 function startOddDuckin(event) {
   event.preventDefault();
-  
+
   const totalRounds = 25; // get totalRoundsInput.value
   const itemsPerRound = 3; // get itemsPerRoundInput.value
 
-  if(event.target.id === 'startOddDuckinButton' && totalRounds > 0 && itemsPerRound > 1) {
+  if (event.target.id === 'startOddDuckinButton' && totalRounds > 0 && itemsPerRound > 1) {
     event.target.classList.toggle('hideButton');
 
+    createResultsTableBody();
     const currentUserSession = new UserSessionObject(totalRounds, itemsPerRound);
     currentUserSession.generateCurrentItemDataTrackersArray();
+
+    // render currentItmeDataTrackersArray data
+    // addEvent Listener to voting div
+    // refresh array(with varitey controls)
+    // receive results
+    // track rounds
+    // end after final round
+    // remove event listener
+    // show results
 
 
     event.target.classList.toggle('hideButton');
   }
-  // get totalRounds, itemsPerRound from DOM
-  // hide button
-  // const currentUserSession = new UserSessionObject(totalRounds, itemsPerRound);
-  createResultsTableBody();
+
   // userSessionObject.runGame();
-  // show button
+}
+
+function handleOddDuckinRoundsInput(event) {
+  event.preventDefault();
+
+  // add views to every item in currentItemDataTrackersArray
+  // add vote to ItemDataTracker matching event.target.value
 }
 
 // EVENT LISTENERS
@@ -149,4 +170,17 @@ function createResultsTableBody() {
 
 // EXECUTABLE CODE
 
+// Check local storage  for array, retrieve if present, create and add if not
+
 createItemDataTrackersArray();
+// const test = {
+//   test: 'yo'
+// };
+// const stringyTest = JSON.stringify(test);
+// localStorage.setItem('itemarray', stringyTest);
+// let undefinedLS = localStorage.getItem('itemarray');
+// undefinedLS = JSON.parse(undefinedLS);
+// if (!undefinedLS) {
+//   console.log('yup');
+// }
+// console.log(undefinedLS.test);
